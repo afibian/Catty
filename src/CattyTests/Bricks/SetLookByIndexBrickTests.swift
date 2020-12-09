@@ -1,5 +1,5 @@
 /**
- *  Copyright (C) 2010-2020 The Catrobat Team
+ *  Copyright (C) 2010-2021 The Catrobat Team
  *  (http://developer.catrobat.org/credits)
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ final class SetLookByIndexBrickTest: XCTestCase {
     override func setUp() {
         project = ProjectManager.createProject(name: "setLookByIndexTest", projectId: "1")
         spriteObject = SpriteObject()
-        spriteObject.scene = project.scene
+        spriteObject.scene = (project.scenes[0] as! Scene)
         spriteObject.name = "SpriteObjectName"
 
         spriteNode = CBSpriteNode(spriteObject: spriteObject)
