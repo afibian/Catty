@@ -126,6 +126,7 @@ didSelectItemAtIndexPath:(NSIndexPath*)indexPath
     NSAssert(cell.scriptOrBrick, @"Error, no brick.");
     
     [Util incrementStatisticCountForBrick:cell.scriptOrBrick];
+    [Util  updateRecentlyUsedBricksFor: NSStringFromClass([cell.scriptOrBrick class])];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:NotificationName.brickSelected object:cell.scriptOrBrick];
     

@@ -34,4 +34,34 @@ final class BrickManagerTests: XCTestCase {
         XCTAssertEqual(UIScreen.main.bounds.size.width, size?.width)
         XCTAssertEqual(brickCell?.cellHeight(), size?.height)
     }
+
+    func testRecentlyUsedBricks() {
+        let recentArray: [Brick.Type] = [
+            AskBrick.self,
+            SetBackgroundBrick.self,
+            NextLookBrick.self,
+            PreviousLookBrick.self,
+            SetLookBrick.self,
+            PenDownBrick.self,
+            PenUpBrick.self,
+            SetRotationStyleBrick.self,
+            StitchBrick.self,
+            SetLookByIndexBrick.self
+        ]
+
+        Util.resetRecentlyUsedBricks()
+        let script = Script()
+        var i: UInt = 0
+        for cls in recentArray {
+            script.add(cls.init(), at: i)
+            i += 1
+        }
+
+        let recentBricks = BrickManager.shared()?.selectableBricks(for: kBrickCategoryType(rawValue: 0)!)
+        XCTAssertEqual(recentArray.count, recentBricks?.count)
+        for (ref, res): (AnyClass, Brick) in zip(recentArray.reversed(), recentBricks as! [Brick]) {
+            XCTAssertTrue(ref === type(of: res))
+        }
+        Util.resetRecentlyUsedBricks()
+    }
 }

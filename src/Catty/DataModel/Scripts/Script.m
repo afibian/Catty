@@ -47,6 +47,7 @@
     CBAssert([self.brickList indexOfObject:brick] == NSNotFound);
     brick.script = self;
     [brick.script.brickList insertObject:brick atIndex:index];
+    [Util updateRecentlyUsedBricksFor:NSStringFromClass(brick.class)];
 }
 
 #pragma mark - Custom getter and setter

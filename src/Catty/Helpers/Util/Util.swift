@@ -280,4 +280,33 @@ func synchronized(lock: AnyObject, closure: () -> Void) {
 
         return nil
     }
+
+    class func getRecentlyUsedBricks() -> [String] {
+        let userDefaults = UserDefaults.standard
+        if let recentlyUsed = userDefaults.array(forKey: "recentlyUsedBricks") as? [String] {
+            return recentlyUsed
+        } else {
+            let recentlyUsed = [String]()
+            setRecentlyUsedBricks(to: recentlyUsed)
+            return recentlyUsed
+            }
+        }
+
+    class func updateRecentlyUsedBricks(for BrickOrFunction: String) {
+        var recentlyUsed = getRecentlyUsedBricks()
+        recentlyUsed.removeAll(where: { $0 == BrickOrFunction })
+        if recentlyUsed.count >= kRecentlyUsedSize {
+            recentlyUsed.removeLast()
+        }
+        recentlyUsed.prepend(BrickOrFunction)
+        setRecentlyUsedBricks(to: recentlyUsed)
+    }
+
+    class func setRecentlyUsedBricks(to recentlyUsed: [String]) {
+        UserDefaults.standard.set(recentlyUsed, forKey: "recentlyUsedBricks")
+    }
+
+    class func resetRecentlyUsedBricks() {
+        setRecentlyUsedBricks(to: [String]())
+    }
 }

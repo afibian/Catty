@@ -247,4 +247,43 @@ final class UtilTests: XCTestCase {
 
         XCTAssertEqual(utilSound, sound)
     }
+
+    func testSetAndGetRecentlyUsedBricks() {
+        let usedBricks = [NSStringFromClass(StitchBrick.self), NSStringFromClass(TurnLeftBrick.self), NSStringFromClass(MoveNStepsBrick.self)]
+        Util.resetRecentlyUsedBricks()
+        Util.setRecentlyUsedBricks(to: usedBricks)
+        let savedBricks = Util.getRecentlyUsedBricks()
+        XCTAssertEqual(usedBricks, savedBricks)
+    }
+
+    func testResetRecentlyUsedBricks() {
+        let usedBricks = [NSStringFromClass(StitchBrick.self), NSStringFromClass(TurnLeftBrick.self), NSStringFromClass(MoveNStepsBrick.self)]
+        Util.setRecentlyUsedBricks(to: usedBricks)
+        Util.resetRecentlyUsedBricks()
+        let savedBricks = Util.getRecentlyUsedBricks()
+        XCTAssertEqual(0, savedBricks.count)
+        XCTAssertEqual([String](), savedBricks)
+    }
+
+    func testUpdateRecentlyUsedBricksAddNew() {
+        let usedBricks = [NSStringFromClass(StitchBrick.self), NSStringFromClass(TurnLeftBrick.self), NSStringFromClass(MoveNStepsBrick.self)]
+        Util.resetRecentlyUsedBricks()
+        Util.setRecentlyUsedBricks(to: usedBricks)
+
+        Util.updateRecentlyUsedBricks(for: NSStringFromClass(TurnRightBrick.self))
+        let savedBricks = Util.getRecentlyUsedBricks()
+
+        XCTAssertEqual([NSStringFromClass(TurnRightBrick.self)] + usedBricks, savedBricks)
+    }
+
+    func testUpdateRecentlyUsedBricksReorder() {
+        let usedBricks = [NSStringFromClass(StitchBrick.self), NSStringFromClass(TurnLeftBrick.self), NSStringFromClass(MoveNStepsBrick.self)]
+
+        Util.resetRecentlyUsedBricks()
+        Util.setRecentlyUsedBricks(to: usedBricks)
+        Util.updateRecentlyUsedBricks(for: NSStringFromClass(StitchBrick.self))
+        let savedBricks = Util.getRecentlyUsedBricks()
+
+        XCTAssertEqual(usedBricks, savedBricks)
+    }
 }
